@@ -36,6 +36,11 @@ contract Domains is ERC721URIStorage {
   // Add global variable for Owner
   address payable public owner;
   
+  // Add custom errors to be reused anywhere
+  error Unauthorized();
+  error AlreadyRegistered();
+  error InvalidName(string name);
+
   // We make the contract "payable" by adding this to the constructor
   constructor(string memory _tld) ERC721("Wallet Name Service", "WNS") payable {
     owner = payable(msg.sender);
@@ -58,8 +63,9 @@ contract Domains is ERC721URIStorage {
 
   // A register function that adds their names to our mapping NOW PAYABLE
   function register(string calldata name) public payable {
-    // Check that the name is unregistered (explained in notes)
-    require(domains[name] == address(0));
+    // Add custom errors
+    if(domains[name] != address(0)) revert AlreadyRegistered();
+    if(!valid(name)) revert InvalidName(name);
 
     uint _price = price(name);
 
@@ -113,8 +119,8 @@ contract Domains is ERC721URIStorage {
   }
 
   function setRecord(string calldata name, string calldata record) public {
-    // Check that the owner is the transaction sender
-    require(domains[name] == msg.sender);
+    // Modify function to add error 
+    if(msg.sender != domains[name]) revert Unauthorized();
     records[name] = record;
   }
 
