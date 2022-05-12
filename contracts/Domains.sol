@@ -29,7 +29,9 @@ contract Domains is ERC721URIStorage {
   // Our "mapping" store for domains and records
   mapping(string => address) public domains;
   mapping(string => string) public records;
-  
+
+  // Mapping to get all minted domain names
+  mapping (uint => string) public names;
 
   // Add global variable for Owner
   address payable public owner;
@@ -134,4 +136,15 @@ contract Domains is ERC721URIStorage {
 
     (bool success, ) = msg.sender.call{value: amount}("");
     require(success, "Failed to withdraw Matic");
+  }
+
+  // Get all minted domain names
+  function getAllNames() public view returns (string[] memory) {
+    console.log("Getting all names from contract");
+    string[] memory allNames = new string[](_tokenIds.current());
+    for (uint256 i = 0; i < _tokenIds.current(); i++) {
+      allNames[i] = names[i];
+      console.log("Name for token %d is %s", i, allNames[i]);
+    }
+    return allNames;
   }
