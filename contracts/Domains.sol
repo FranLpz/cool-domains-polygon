@@ -42,10 +42,10 @@ contract Domains is ERC721URIStorage {
   error InvalidName(string name);
 
   // We make the contract "payable" by adding this to the constructor
-  constructor(string memory _tld) ERC721("Wallet Name Service", "WNS") payable {
+  constructor(string memory _tld) ERC721("Wallet Domain Service", "WDS") payable {
     owner = payable(msg.sender);
     tld = _tld;
-    console.log("%s name service deployed", _tld);
+    console.log("%s domain service deployed", _tld);
   }
 
   // This function will give us the price of a domain based on length
@@ -75,7 +75,7 @@ contract Domains is ERC721URIStorage {
     // Combine the name passed into the function with the TLD
     string memory _name = string(abi.encodePacked(name, ".", tld));
     // Create the SVG (image) for the NFT with the name
-    string memory finalSvg = string(abi.encodePacked(svgPartOne, _name, svgPartTwo));
+    string memory finalSvg = string(abi.encodePacked(svgPartOne, name, svgPartTwo));
     uint256 newRecordId = _tokenIds.current();
     uint256 length = StringUtils.strlen(name);
     string memory strLen = Strings.toString(length); 
