@@ -30,6 +30,10 @@ contract Domains is ERC721URIStorage {
   mapping(string => address) public domains;
   mapping(string => string) public records;
   
+
+  // Add global variable for Owner
+  address payable public owner;
+  
   // We make the contract "payable" by adding this to the constructor
   constructor(string memory _tld) ERC721("Wallet Name Service", "WNS") payable {
     owner = payable(msg.sender);
