@@ -148,3 +148,9 @@ contract Domains is ERC721URIStorage {
     }
     return allNames;
   }
+
+  function valid(string calldata name) public pure returns(bool) {
+    return StringUtils.strlen(name) >= 3 && StringUtils.strlen(name) <= 10;
+  }
+
+}
